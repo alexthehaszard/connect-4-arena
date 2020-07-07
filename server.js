@@ -13,8 +13,7 @@ let gameid = ["1"];
 
 let turn = [0];
 
-// start the server listening for requests
-app.listen(process.env.PORT || 3000, () => console.log("Server is running..."));
+app.set("port", 3000);
 app.use("/static", express.static(__dirname + "/static"));
 
 app.get("/", function (request, response) {
