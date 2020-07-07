@@ -12,16 +12,20 @@ let players = [1];
 let gameid = ["1"];
 
 let turn = [0];
+var port = process.env.PORT || 5000;
 
-app.set("port", 3000);
 app.use("/static", express.static(__dirname + "/static"));
 
 app.get("/", function (request, response) {
   response.sendFile(path.join(__dirname, "index.html"));
 });
 
-server.listen(5000, function () {
-  console.log("Starting server on port 5000");
+// server.listen(5000, function () {
+//   console.log("Starting server on port 5000");
+// });
+
+app.listen(port, function () {
+  console.log("Our app is running on http://localhost:" + port);
 });
 
 io.on("connection", function (socket) {
