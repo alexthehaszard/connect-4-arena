@@ -12,7 +12,12 @@ let players = [1];
 let gameid = ["1"];
 
 let turn = [0];
-var port = process.env.PORT || 5000;
+
+let startTimes = [0];
+
+let counter = 0;
+
+const port = process.env.PORT || 5000;
 
 app.use("/static", express.static(__dirname + "/static"));
 
@@ -23,6 +28,21 @@ app.get("/", function (request, response) {
 // server.listen(5000, function () {
 //   console.log("Starting server on port 5000");
 // });
+setInterval(() => {
+  timer();
+}, 1000);
+
+function timer() {
+  counter++;
+  for (let i = 0; i < startTimes.length; i++) {
+    if (counter - startTimes[i] === 1800) {
+      console.log("server", gameid[i], "is closing");
+      turn.splice(gameid.indexOf(i), 1);
+      players.splice(gameid.indexOf(i), 1);
+      gameid.splice(gameid.indexOf(i), 1);
+    }
+  }
+}
 
 server.listen(port, function () {
   console.log("Our app is running on http://localhost:" + port);
@@ -65,6 +85,7 @@ io.on("connection", function (socket) {
       io.sockets.emit("return", pass, id);
       console.log(gameid);
     } else {
+      startTimes.push(counter);
       gameid.push(pass);
       turn.push(0);
       players.push(1);
