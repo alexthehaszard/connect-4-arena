@@ -24,7 +24,7 @@ app.get("/", function (request, response) {
 //   console.log("Starting server on port 5000");
 // });
 
-app.listen(port, function () {
+server.listen(port, function () {
   console.log("Our app is running on http://localhost:" + port);
 });
 
