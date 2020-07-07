@@ -190,21 +190,22 @@ socket.on("return", function (pass, id) {
 
 socket.on("player", function (data, id) {
   if (player === 1 && id === gameid) {
-    document.getElementById("hasOpponent").innerHTML = "opponent found";
     colour = " 🟡 ";
     socket.emit("username", username, gameid, player);
     document.getElementById("players").firstChild.innerHTML += colour;
+    document.getElementById("turn").style = "display: none";
+    document.getElementById("hasOpponent").style = "display: none";
   } else if (!player && data && gameid) {
     player = data;
     console.log("player: " + data);
     document.getElementById("leave").style = "";
   } else if (!data) {
-    document.getElementById("hasOpponent").innerHTML = "no games available";
   }
   if (player === 2 && id === gameid) {
-    document.getElementById("hasOpponent").innerHTML = "opponent found";
     colour = " 🔴 ";
     document.getElementById("players").firstChild.innerHTML += colour;
+    document.getElementById("turn").style = "display: none";
+    document.getElementById("hasOpponent").style = "display: none";
   }
 });
 
