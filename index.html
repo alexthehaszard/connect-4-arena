@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script defer src="/static/index.js"></script>
+    <link href="/static/index.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+  </head>
+
+  <body>
+    <div id="board" style="display: none;"></div>
+    <div id="setup">
+      <div id="serverSetup">
+        <input id="password" />
+        <button onclick="joinGame()">join game</button>
+      </div>
+      <a id="leave" href="." style="display: none;">leave server</a>
+      <p id="hasOpponent">no opponent</p>
+      <p id="won" style="display: none;">game won</p>
+      <p id="turn"></p>
+      <a id="restart" href="." style="display: none;">restart game</a>
+    </div>
+  </body>
+</html>
