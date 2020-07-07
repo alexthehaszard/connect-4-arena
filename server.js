@@ -59,11 +59,13 @@ io.on("connection", function (socket) {
   });
 
   socket.on("move", function (move, id) {
-    console.log(move);
     turn[gameid.indexOf(id)]++;
-    console.log(turn[gameid.indexOf(id)]);
     io.sockets.emit("turn", turn[gameid.indexOf(id)], id);
     io.sockets.emit("move", move, id);
+  });
+
+  socket.on("username", function (data, id, p) {
+    io.sockets.emit("username", data, id, p);
   });
 
   socket.on("gameover", function (id) {

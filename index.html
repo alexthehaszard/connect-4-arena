@@ -9,9 +9,12 @@
 
   <body>
     <div id="board" style="display: none;"></div>
+    <div id="players"></div>
     <div id="setup">
       <div id="serverSetup">
-        <input id="password" />
+        <input id="username" placeholder="username" />
+        <br />
+        <input id="password" placeholder="server" />
         <button onclick="joinGame()">join game</button>
       </div>
       <a id="leave" href="." style="display: none;">leave server</a>

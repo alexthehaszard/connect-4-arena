@@ -1,3 +1,5 @@
+const socket = io();
+
 let board = [
   [0, 0, 0, 0, 0, 0, 0],
   [0, 0, 0, 0, 0, 0, 0],
@@ -11,11 +13,18 @@ let turn;
 let player;
 let index = 0;
 let gameid;
-const socket = io();
+let username;
+let colour;
+
+let startTime;
 
 function createBoard() {
   document.getElementById("board").style = "";
   document.getElementById("serverSetup").style = "display: none";
+  username = document.getElementById("username").value;
+  let name = document.createElement("p");
+  name.innerHTML = username;
+  document.getElementById("players").appendChild(name);
   for (let i = 0; i < board.length; i++) {
     div[i] = [];
     for (let j = 0; j < board[i].length; j++) {
@@ -144,6 +153,29 @@ socket.on("move", function (data, id) {
   }
 });
 
+socket.on("username", function (data, id, p) {
+  if (
+    id === gameid &&
+    p !== player &&
+    document.getElementById("players").childElementCount < 2
+  ) {
+    let name = document.createElement("p");
+    if (colour === " 🟡 ") {
+      name.innerHTML = " 🔴 " + data;
+    } else {
+      name.innerHTML = " 🟡 " + data;
+    }
+    document.getElementById("players").appendChild(name);
+    socket.emit("username", username, gameid, player);
+    if (document.getElementById("turn").innerHTML === "not your turn") {
+      document.getElementById("players").lastChild.classList = "current_player";
+    } else {
+      document.getElementById("players").firstChild.classList =
+        "current_player";
+    }
+  }
+});
+
 socket.on("return", function (pass, id) {
   if (gameid === id) {
     if (pass !== false) {
@@ -157,8 +189,11 @@ socket.on("return", function (pass, id) {
 });
 
 socket.on("player", function (data, id) {
-  if (player === 1) {
+  if (player === 1 && id === gameid) {
     document.getElementById("hasOpponent").innerHTML = "opponent found";
+    colour = " 🟡 ";
+    socket.emit("username", username, gameid, player);
+    document.getElementById("players").firstChild.innerHTML += colour;
   } else if (!player && data && gameid) {
     player = data;
     console.log("player: " + data);
@@ -166,8 +201,10 @@ socket.on("player", function (data, id) {
   } else if (!data) {
     document.getElementById("hasOpponent").innerHTML = "no games available";
   }
-  if (player === 2) {
+  if (player === 2 && id === gameid) {
     document.getElementById("hasOpponent").innerHTML = "opponent found";
+    colour = " 🔴 ";
+    document.getElementById("players").firstChild.innerHTML += colour;
   }
 });
 
@@ -176,9 +213,18 @@ socket.on("turn", function (t, id) {
     turn = t;
     console.log("turn: " + ((turn + 1) % 2));
     if ((turn + 1) % 2 === player - 1) {
+      console.log("here");
       document.getElementById("turn").innerHTML = "your turn";
+      document.getElementById("players").firstChild.classList =
+        "current_player";
+      document.getElementById("players").lastChild.classList = "";
     } else {
       document.getElementById("turn").innerHTML = "not your turn";
+      if (document.getElementById("players").childElementCount > 1) {
+        document.getElementById("players").firstChild.classList = "";
+        document.getElementById("players").lastChild.classList =
+          "current_player";
+      }
     }
   }
 });
