@@ -20,6 +20,7 @@ let startTime;
 
 function createBoard() {
   document.getElementById("board").style = "";
+  document.getElementById("hasOpponent").style = "";
   document.getElementById("serverSetup").style = "display: none";
   username = document.getElementById("username").value;
   let name = document.createElement("p");
