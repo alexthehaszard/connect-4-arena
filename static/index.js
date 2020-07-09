@@ -50,10 +50,8 @@ function setColour(j, bypass) {
     colourChange("gold", j);
     board[index - 1][j] = 2;
   }
-  setTimeout(() => {
-    if (!bypass) socket.emit("move", j, gameid);
-    checkWin();
-  }, 100);
+  if (!bypass) socket.emit("move", j, gameid);
+  checkWin();
 }
 
 function colourChange(colour, j) {
