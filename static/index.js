@@ -52,9 +52,11 @@ function setColour(j, bypass) {
     colourChange("gold", j);
     board[index - 1][j] = 2;
   }
-  if (!bypass) socket.emit("move", j, gameid);
+  if (!bypass) {
+    socket.emit("move", j, gameid);
+    dontAllowMoves = true;
+  }
   checkWin();
-  dontAllowMoves = true;
 }
 
 function colourChange(colour, j) {
@@ -150,7 +152,6 @@ socket.on("move", function (data, id) {
   if (id === gameid) {
     if ((turn + 1) % 2 === player - 1) {
       console.log("data: " + data);
-      dontAllowMoves = true;
       setColour(data, true);
     }
   }
@@ -219,11 +220,13 @@ socket.on("turn", function (t, id) {
     if ((turn + 1) % 2 === player - 1) {
       console.log("here");
       document.getElementById("turn").innerHTML = "your turn";
+      dontAllowMoves = false;
       document.getElementById("players").firstChild.classList =
         "current_player";
       document.getElementById("players").lastChild.classList = "";
     } else {
       document.getElementById("turn").innerHTML = "not your turn";
+      dontAllowMoves = false;
       if (document.getElementById("players").childElementCount > 1) {
         document.getElementById("players").firstChild.classList = "";
         document.getElementById("players").lastChild.classList =
