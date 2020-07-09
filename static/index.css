@@ -37,7 +37,7 @@ input:focus {
 #board {
   position: relative;
   display: grid;
-  grid-template-columns: repeat(7, min(11vw, 100px));
+  grid-template-columns: repeat(7, min(11vw, 110px));
   width: max-content;
   left: 49.4%;
   transform: translateX(-50%);
