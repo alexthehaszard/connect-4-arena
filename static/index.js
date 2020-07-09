@@ -35,9 +35,9 @@ function createBoard() {
       div[i][j].setAttribute("onmouseover", `hoverOver(${j})`);
       document.getElementById("board").appendChild(div[i][j]);
     }
-    let br = document.createElement("div");
-    br.classList = "break";
-    document.getElementById("board").appendChild(br);
+    // let br = document.createElement("div");
+    // br.classList = "break";
+    // document.getElementById("board").appendChild(br);
   }
 }
 
@@ -131,11 +131,11 @@ function checkSurrounding(i, j) {
   setTimeout(() => {
     socket.disconnect();
   }, 100);
-  document.getElementById("restart").style = "";
-  if (board[i][j] === 1) {
-    document.getElementById("won").style = "color: red";
+  document.getElementById("won").style = "";
+  if (board[i][j] === player - 1) {
+    document.getElementById("won").innerHTML = "You win!";
   } else {
-    document.getElementById("won").style = "color: gold";
+    document.getElementById("won").innerHTML = "You lose :(";
   }
 }
 
