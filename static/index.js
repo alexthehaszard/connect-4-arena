@@ -15,6 +15,7 @@ let index = 0;
 let gameid;
 let username;
 let colour;
+let dontAllowMoves = false;
 
 let startTime;
 
@@ -42,6 +43,7 @@ function createBoard() {
 }
 
 function setColour(j, bypass) {
+  if (dontAllowMoves === true) return;
   if (document.getElementById("turn").innerHTML !== "your turn") return;
   if ((turn % 2 === 1 && board[0][j] === 0) || turn[0] === 0 || turn === 0) {
     colourChange("red", j);
@@ -52,6 +54,7 @@ function setColour(j, bypass) {
   }
   if (!bypass) socket.emit("move", j, gameid);
   checkWin();
+  dontAllowMoves = true;
 }
 
 function colourChange(colour, j) {
@@ -147,6 +150,7 @@ socket.on("move", function (data, id) {
   if (id === gameid) {
     if ((turn + 1) % 2 === player - 1) {
       console.log("data: " + data);
+      dontAllowMoves = true;
       setColour(data, true);
     }
   }
