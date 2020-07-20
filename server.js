@@ -7,13 +7,15 @@ const app = express();
 const server = http.Server(app);
 const io = socketIO(server);
 
-let players = [1];
+let players = [];
 
-let gameid = ["1"];
+let gameid = [];
 
-let turn = [0];
+let usernames = [];
 
-let startTimes = [0];
+let turn = [];
+
+let startTimes = [];
 
 let counter = 0;
 
@@ -75,7 +77,7 @@ io.on("connection", function (socket) {
     gameid.splice(gameid.indexOf(id), 1);
   });
 
-  socket.on("password", function (pass, id) {
+  socket.on("password", function (pass, id, username) {
     if (pass[pass.length - 1] === " ") {
       let temp = "";
       for (let i = 0; i < pass.length - 1; i++) {
@@ -91,8 +93,14 @@ io.on("connection", function (socket) {
       gameid.push(pass);
       turn.push(0);
       players.push(1);
+      usernames.push(username);
       io.sockets.emit("return", pass, id);
       console.log(gameid);
+      io.sockets.emit("games", gameid, usernames);
     }
+  });
+
+  socket.on("getTimes", function () {
+    io.sockets.emit("games", gameid, usernames);
   });
 });

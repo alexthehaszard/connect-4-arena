@@ -16,13 +16,17 @@ let gameid;
 let username;
 let colour;
 let dontAllowMoves = false;
+let shownID = [];
 
 let startTime;
+
+socket.emit("getTimes");
 
 function createBoard() {
   document.getElementById("board").style = "";
   document.getElementById("hasOpponent").style = "";
   document.getElementById("serverSetup").style = "display: none";
+  document.getElementById("serverList").style = "display: none";
   username = document.getElementById("username").value;
   let name = document.createElement("p");
   name.innerHTML = username;
@@ -142,10 +146,16 @@ function checkSurrounding(i, j) {
   }
 }
 
-function joinGame() {
+function joinGame(join) {
+  let pw;
+  if (join) {
+    pw = join;
+  } else {
+    pw = document.getElementById("password").value;
+  }
   createBoard();
   gameid = Math.random();
-  socket.emit("password", document.getElementById("password").value, gameid);
+  socket.emit("password", pw, gameid, username);
 }
 
 socket.on("move", function (data, id) {
@@ -232,6 +242,31 @@ socket.on("turn", function (t, id) {
         document.getElementById("players").lastChild.classList =
           "current_player";
       }
+    }
+  }
+});
+
+socket.on("games", function (gameID, usernames) {
+  console.log("gameID, usernames");
+  for (let i = 0; i < gameID.length; i++) {
+    if (!shownID.includes(gameID[i])) {
+      let div = document.createElement("div");
+      div.classList = "server";
+      let usernameID = document.createElement("p");
+      usernameID.innerHTML = usernames[i];
+      usernameID.classList = "serverP server-username";
+      div.appendChild(usernameID);
+      let button = document.createElement("button");
+      button.innerHTML = "Join Game";
+      button.classList = "server-button";
+      button.setAttribute("onclick", `joinGame("${gameID[i]}")`);
+      div.appendChild(button);
+      let serverID = document.createElement("p");
+      serverID.innerHTML = gameID[i];
+      serverID.classList = "serverP";
+      div.appendChild(serverID);
+      document.getElementById("serverList").appendChild(div);
+      shownID.push(gameID[i]);
     }
   }
 });
