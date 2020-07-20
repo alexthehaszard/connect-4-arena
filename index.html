@@ -17,13 +17,20 @@
       <div id="players"></div>
       <p id="won" style="display: none;"></p>
       <div id="setup">
-        <div id="serverSetup">
+        <div id="serverSetup" style="display: none">
           <input id="username" placeholder="Username" />
-          <input id="password" placeholder="Game ID" />
-          <button onclick="joinGame()">Join Game</button>
+          <input id="password" placeholder="Game ID" style="display: none" />
+          <button id="joinGame" onclick="joinGame()">Join Game</button>
         </div>
         <div id="serverList">
           <p class="server-title">Server List</p>
+          <div id="createServer" class="server" onclick="createServer()">
+            <p>Create Server</p>
+            <img class="images" src="/static/images/plus.png">
+          </div>
+          <div id="servers">
+            
+          </div>
         </div>
         <a id="leave" href="." style="display: none;">leave server</a>
         <p id="hasOpponent" style="display: none">no opponent</p>

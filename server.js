@@ -57,6 +57,7 @@ io.on("connection", function (socket) {
       io.sockets.emit("player", players[players.length - 1], id);
       io.sockets.emit("turn", turn[turn.length - 1], id);
       players[gameid.indexOf(id)]++;
+      io.sockets.emit("games", gameid, usernames, players);
     }
   });
 
@@ -96,11 +97,11 @@ io.on("connection", function (socket) {
       usernames.push(username);
       io.sockets.emit("return", pass, id);
       console.log(gameid);
-      io.sockets.emit("games", gameid, usernames);
+      io.sockets.emit("games", gameid, usernames, players);
     }
   });
 
   socket.on("getTimes", function () {
-    io.sockets.emit("games", gameid, usernames);
+    io.sockets.emit("games", gameid, usernames, players);
   });
 });

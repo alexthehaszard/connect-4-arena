@@ -146,6 +146,20 @@ function checkSurrounding(i, j) {
   }
 }
 
+function createServer() {
+  document.getElementById("serverSetup").style = "display: flex";
+  document.getElementById("serverList").style = "display: none";
+  document.getElementById("password").style = "display: intial";
+}
+
+function joinServer(id) {
+  document.getElementById("serverSetup").style = "display: flex";
+  document.getElementById("serverList").style = "display: none";
+  document
+    .getElementById("joinGame")
+    .setAttribute("onclick", `joinGame("${id}")`);
+}
+
 function joinGame(join) {
   let pw;
   if (join) {
@@ -246,10 +260,10 @@ socket.on("turn", function (t, id) {
   }
 });
 
-socket.on("games", function (gameID, usernames) {
-  console.log("gameID, usernames");
+socket.on("games", function (gameID, usernames, players) {
+  document.getElementById("servers").innerHTML = "";
   for (let i = 0; i < gameID.length; i++) {
-    if (!shownID.includes(gameID[i])) {
+    if (players[i] <= 2) {
       let div = document.createElement("div");
       div.classList = "server";
       let usernameID = document.createElement("p");
@@ -259,13 +273,13 @@ socket.on("games", function (gameID, usernames) {
       let button = document.createElement("button");
       button.innerHTML = "Join Game";
       button.classList = "server-button";
-      button.setAttribute("onclick", `joinGame("${gameID[i]}")`);
+      button.setAttribute("onclick", `joinServer("${gameID[i]}")`);
       div.appendChild(button);
       let serverID = document.createElement("p");
       serverID.innerHTML = gameID[i];
       serverID.classList = "serverP";
       div.appendChild(serverID);
-      document.getElementById("serverList").appendChild(div);
+      document.getElementById("servers").appendChild(div);
       shownID.push(gameID[i]);
     }
   }
