@@ -37,7 +37,7 @@ setInterval(() => {
 function timer() {
   counter++;
   for (let i = 0; i < startTimes.length; i++) {
-    if (counter - startTimes[i] === 1800) {
+    if (counter - startTimes[i] === 1300) {
       console.log("server", gameid[i], "is closing");
       turn.splice(gameid.indexOf(i), 1);
       players.splice(gameid.indexOf(i), 1);
