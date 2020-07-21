@@ -17,6 +17,11 @@ let username;
 let colour;
 let dontAllowMoves = false;
 let shownID = [];
+let counter = 0;
+
+let hasLost = false;
+
+let interval;
 
 let startTime;
 
@@ -40,9 +45,6 @@ function createBoard() {
       div[i][j].setAttribute("onmouseover", `hoverOver(${j})`);
       document.getElementById("board").appendChild(div[i][j]);
     }
-    // let br = document.createElement("div");
-    // br.classList = "break";
-    // document.getElementById("board").appendChild(br);
   }
 }
 
@@ -139,7 +141,7 @@ function checkSurrounding(i, j) {
     socket.disconnect();
   }, 100);
   document.getElementById("won").style = "";
-  if (board[i][j] === player - 1) {
+  if (board[i][j] !== player) {
     document.getElementById("won").innerHTML = "You win!";
   } else {
     document.getElementById("won").innerHTML = "You lose :(";
@@ -160,7 +162,31 @@ function joinServer(id) {
     .setAttribute("onclick", `joinGame("${id}")`);
 }
 
+function timer() {
+  console.log("go");
+  counter++;
+  document.getElementById("counter").innerHTML = counter;
+  if (counter >= 30) {
+    clearInterval(interval);
+    hasLost = true;
+    socket.emit("gameover", gameid, true);
+    document.getElementById("turn").innerHTML = "";
+    document.getElementById("won").style = "";
+    document.getElementById("won").innerHTML = "Took too long :(";
+    setTimeout(() => {
+      socket.disconnect();
+    }, 100);
+  }
+}
+
 function joinGame(join) {
+  if (
+    document.getElementById("username").innerHTML === "" ||
+    document.getElementById("password").innerHTML === ""
+  ) {
+    alert("fill out the fields!");
+    return;
+  }
   let pw;
   if (join) {
     pw = join;
@@ -193,6 +219,13 @@ socket.on("username", function (data, id, p) {
     } else {
       name.innerHTML = " 🟡 " + data;
     }
+
+    // create the counter element
+    let count = document.createElement("p");
+    count.innerHTML = counter;
+    count.id = "counter";
+    document.getElementById("players").appendChild(count);
+
     document.getElementById("players").appendChild(name);
     socket.emit("username", username, gameid, player);
     if (document.getElementById("turn").innerHTML === "not your turn") {
@@ -242,13 +275,21 @@ socket.on("turn", function (t, id) {
     turn = t;
     console.log("turn: " + ((turn + 1) % 2));
     if ((turn + 1) % 2 === player - 1) {
-      console.log("here");
       document.getElementById("turn").innerHTML = "your turn";
+      counter = 0;
+      interval = setInterval(() => {
+        timer();
+      }, 1000);
       dontAllowMoves = false;
       document.getElementById("players").firstChild.classList =
         "current_player";
       document.getElementById("players").lastChild.classList = "";
     } else {
+      clearInterval(interval);
+      if (counter > 0) {
+        counter = 0;
+        document.getElementById("counter").innerHTML = counter;
+      }
       document.getElementById("turn").innerHTML = "not your turn";
       dontAllowMoves = false;
       if (document.getElementById("players").childElementCount > 1) {
@@ -281,6 +322,19 @@ socket.on("games", function (gameID, usernames, players) {
       div.appendChild(serverID);
       document.getElementById("servers").appendChild(div);
       shownID.push(gameID[i]);
+    }
+  }
+});
+
+socket.on("gameover", function (id) {
+  if (id === gameid) {
+    if (hasLost === false) {
+      document.getElementById("turn").innerHTML = "";
+      document.getElementById("won").style = "";
+      document.getElementById("won").innerHTML = "You Win!";
+      setTimeout(() => {
+        socket.disconnect();
+      }, 100);
     }
   }
 });

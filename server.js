@@ -71,11 +71,14 @@ io.on("connection", function (socket) {
     io.sockets.emit("username", data, id, p);
   });
 
-  socket.on("gameover", function (id) {
+  socket.on("gameover", function (id, time) {
     console.log("game over", id);
     turn.splice(gameid.indexOf(id), 1);
     players.splice(gameid.indexOf(id), 1);
     gameid.splice(gameid.indexOf(id), 1);
+    if (time) {
+      io.sockets.emit("gameover", id);
+    }
   });
 
   socket.on("password", function (pass, id, username) {

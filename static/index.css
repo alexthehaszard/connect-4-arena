@@ -48,9 +48,9 @@ input:focus {
 
 #players {
   position: relative;
-  left: 50%;
+  left: 49.4%;
   transform: translateX(-50%);
-  width: min(100vw, 798px);
+  width: min(90vw, 750px);
   display: flex;
   justify-content: space-between;
 }
@@ -100,6 +100,12 @@ input:focus {
   padding: 0 2rem 0 2rem;
 }
 
+#counter {
+  position: absolute;
+  width: 100%;
+  text-align: center;
+}
+
 #createServer:hover {
   cursor: pointer;
 }
@@ -115,7 +121,7 @@ input:focus {
 
 .server {
   display: grid;
-  grid-template-columns: 3fr 1fr;
+  grid-template-columns: 66% 33%;
   background: rgba(0, 0, 0, 0.2);
   padding: 1rem;
   border-radius: 5px;
