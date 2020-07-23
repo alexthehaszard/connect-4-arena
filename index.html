@@ -10,7 +10,9 @@
 
   <body>
     <nav>
-      <h1>Connect 4 Arena</h1>
+      <a href="./">
+        <h1>Connect 4 Arena</h1>
+      </a>
     </nav>
     <main>
       <div id="board" style="display: none;"></div>
@@ -29,7 +31,7 @@
         </div>
         <div id="serverList">
           <p class="server-title">Server List</p>
-          <div id="createServer" class="server" onclick="createServer()">
+          <div id="createServer" onclick="createServer()">
             <p>Create Server</p>
             <img class="images" src="/static/images/plus.png">
           </div>
@@ -37,8 +39,6 @@
             
           </div>
         </div>
-        <a id="leave" href="." style="display: none;">leave server</a>
-        <p id="hasOpponent" style="display: none">no opponent</p>
         <p id="turn" style="display: none;"></p>
       </div>
     </body>

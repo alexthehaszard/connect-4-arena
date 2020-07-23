@@ -55,7 +55,6 @@ socket.emit("getTimes");
 function createBoard() {
   // show the board
   document.getElementById("board").style = "";
-  document.getElementById("hasOpponent").style = "";
   document.getElementById("won").style = "";
   document.getElementById("won").innerHTML = "Waiting for opponent...";
   // remove the setup and server list
@@ -334,19 +333,16 @@ socket.on("player", function (data, id) {
     socket.emit("username", username, gameid, player, turnLength);
     document.getElementById("players").firstChild.innerHTML += colour;
     document.getElementById("turn").style = "display: none";
-    document.getElementById("hasOpponent").style = "display: none";
     document.getElementById("won").style = "display: none";
   } else if (!player && data && gameid) {
     player = data;
     console.log("player: " + data);
-    document.getElementById("leave").style = "";
   } else if (!data) {
   }
   if (player === 2 && id === gameid) {
     colour = " 🔴 ";
     document.getElementById("players").firstChild.innerHTML += colour;
     document.getElementById("turn").style = "display: none";
-    document.getElementById("hasOpponent").style = "display: none";
     document.getElementById("won").style = "display: none";
   }
 });
