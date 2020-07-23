@@ -42,6 +42,7 @@ function timer() {
       turn.splice(gameid.indexOf(i), 1);
       players.splice(gameid.indexOf(i), 1);
       gameid.splice(gameid.indexOf(i), 1);
+      usernames.splice(gameid.indexOf(i), 1);
     }
   }
 }
@@ -71,13 +72,18 @@ io.on("connection", function (socket) {
     io.sockets.emit("username", data, id, p);
   });
 
-  socket.on("gameover", function (id, time) {
+  socket.on("gameover", function (id, time, leave) {
     console.log("game over", id);
     turn.splice(gameid.indexOf(id), 1);
     players.splice(gameid.indexOf(id), 1);
     gameid.splice(gameid.indexOf(id), 1);
+    usernames.splice(gameid.indexOf(id), 1);
     if (time) {
       io.sockets.emit("gameover", id);
+    }
+    if (leave) {
+      io.sockets.emit("left", id);
+      io.sockets.emit("games", gameid, usernames, players);
     }
   });
 

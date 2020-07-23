@@ -402,3 +402,21 @@ socket.on("gameover", function (id) {
     }
   }
 });
+
+socket.on("left", function (id) {
+  if (id === gameid) {
+    if (hasLost === false) {
+      document.getElementById("turn").innerHTML = "";
+      document.getElementById("won").style = "";
+      document.getElementById("won").innerHTML = "Opponent Left";
+      setTimeout(() => {
+        socket.disconnect();
+      }, 100);
+    }
+  }
+});
+
+window.onbeforeunload = function () {
+  socket.emit("gameover", gameid, false, true);
+  return null;
+};
