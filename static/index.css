@@ -20,22 +20,43 @@ nav {
   color: white;
 }
 
-input {
+input[type="text"] {
   background: rgba(0, 0, 0, 0.2);
   border: 0px;
-  border-radius: 0;
-  padding: 5px;
-  margin-bottom: 10px;
-  text-align: center;
+  border-radius: 5px;
+  padding: 15px;
+  margin-bottom: 20px;
   color: white;
 }
 
-input::placeholder {
-  color: rgba(220, 220, 220);
+input[type="range"] {
+  margin-bottom: 20px;
+}
+
+label {
+  color: white;
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
 }
 
 input:focus {
   outline: none;
+}
+
+button {
+  background: rgba(255, 255, 255, 0.8);
+  border: 0px;
+  border-radius: 5px;
+  padding: 15px;
+  margin-bottom: 10px;
+  color: black;
+  font-size: 1rem;
+  transition: background-color 0.5s ease;
+}
+
+button:hover {
+  cursor: pointer;
+  background: rgba(255, 255, 255, 0.6);
 }
 
 #board {
@@ -95,7 +116,8 @@ input:focus {
   text-align: center;
   align-items: center;
   justify-content: center;
-  padding: 0 2rem 0 2rem;
+  padding: 0;
+  width: max(10rem, 20vw);
 }
 
 #counter {
@@ -115,11 +137,13 @@ input:focus {
 
 .server-username {
   font-size: 1.5rem;
+  margin-bottom: 0;
 }
 
 .server {
   display: grid;
   grid-template-columns: 66% 33%;
+  grid-template-rows: 2rem 2rem;
   background: rgba(0, 0, 0, 0.2);
   padding: 1rem;
   border-radius: 5px;
@@ -130,7 +154,7 @@ input:focus {
 #won {
   position: absolute;
   top: 150px;
-  padding: 10px;
+  padding: 10px 25px 10px 25px;
   background-color: rgba(0, 0, 0, 0.5);
   border-radius: 5px;
   left: 50%;
@@ -176,6 +200,6 @@ input:focus {
 }
 
 .server-button {
-  grid-row: 1/3;
+  grid-row: 1/4;
   grid-column: 2;
 }

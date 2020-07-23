@@ -46,6 +46,8 @@ let hasLost = false;
 // the interval timer for the counter
 let interval;
 
+let turnLength = 30;
+
 // when the page is loaded, get all of the games
 socket.emit("getTimes");
 
@@ -54,6 +56,8 @@ function createBoard() {
   // show the board
   document.getElementById("board").style = "";
   document.getElementById("hasOpponent").style = "";
+  document.getElementById("won").style = "";
+  document.getElementById("won").innerHTML = "Waiting for opponent...";
   // remove the setup and server list
   document.getElementById("serverSetup").style = "display: none";
   document.getElementById("serverList").style = "display: none";
@@ -204,6 +208,10 @@ function createServer() {
   document.getElementById("serverSetup").style = "display: flex";
   document.getElementById("serverList").style = "display: none";
   document.getElementById("password").style = "display: intial";
+  document.getElementById("timerLength").style = "";
+  document.getElementById("timerLabel").style = "";
+  document.getElementById("turnLabel").style = "";
+  document.getElementById("passwordLabel").style = "";
 }
 
 function joinServer(id) {
@@ -215,11 +223,16 @@ function joinServer(id) {
     .setAttribute("onclick", `joinGame("${id}")`);
 }
 
+function changeLength() {
+  turnLength = document.getElementById("timerLength").value;
+  document.getElementById("timerLabel").innerHTML = `${turnLength}s`;
+}
+
 function timer() {
-  // this is used to count if the user has gone past 30s, although it uses setinterval so it is not that accurate
+  // this is used to count if the user has gone past the turn length, although it uses setinterval so it is not that accurate
   counter++;
   document.getElementById("counter").innerHTML = counter;
-  if (counter >= 30) {
+  if (counter >= turnLength) {
     // if you have lost, stop the counter
     clearInterval(interval);
     hasLost = true;
@@ -271,7 +284,7 @@ socket.on("move", function (data, id) {
   }
 });
 
-socket.on("username", function (data, id, p) {
+socket.on("username", function (data, id, p, time) {
   if (
     id === gameid &&
     p !== player &&
@@ -284,6 +297,8 @@ socket.on("username", function (data, id, p) {
       name.innerHTML = " 🟡 " + data;
     }
 
+    turnLength = time;
+
     // create the counter element
     let count = document.createElement("p");
     count.innerHTML = counter;
@@ -291,7 +306,7 @@ socket.on("username", function (data, id, p) {
     document.getElementById("players").appendChild(count);
 
     document.getElementById("players").appendChild(name);
-    socket.emit("username", username, gameid, player);
+    socket.emit("username", username, gameid, player, turnLength);
     if (document.getElementById("turn").innerHTML === "not your turn") {
       document.getElementById("players").lastChild.classList = "current-player";
     } else {
@@ -316,10 +331,11 @@ socket.on("return", function (pass, id) {
 socket.on("player", function (data, id) {
   if (player === 1 && id === gameid) {
     colour = " 🟡 ";
-    socket.emit("username", username, gameid, player);
+    socket.emit("username", username, gameid, player, turnLength);
     document.getElementById("players").firstChild.innerHTML += colour;
     document.getElementById("turn").style = "display: none";
     document.getElementById("hasOpponent").style = "display: none";
+    document.getElementById("won").style = "display: none";
   } else if (!player && data && gameid) {
     player = data;
     console.log("player: " + data);
@@ -331,6 +347,7 @@ socket.on("player", function (data, id) {
     document.getElementById("players").firstChild.innerHTML += colour;
     document.getElementById("turn").style = "display: none";
     document.getElementById("hasOpponent").style = "display: none";
+    document.getElementById("won").style = "display: none";
   }
 });
 

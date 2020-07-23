@@ -18,8 +18,13 @@
       <p id="won" style="display: none;"></p>
       <div id="setup">
         <div id="serverSetup" style="display: none">
-          <input id="username" maxlength="16" placeholder="Username" />
-          <input id="password" maxlength="16" placeholder="Game ID" style="display: none" />
+          <label id="usernameLabel" for="username">Username</label>
+          <input id="username" maxlength="16" type="text" />
+          <label id="passwordLabel" for="password" style="display: none">Game ID</label>
+          <input id="password" maxlength="16" style="display: none" type="text" />
+          <label id="turnLabel" for="timerLength" style="display: none">Turn Length</label>
+          <label id="timerLabel" for="timerLength" style="display: none">30s</label>
+          <input type="range" min="2" max="30" value="30" id="timerLength" oninput="changeLength()" style="display: none">
           <button id="joinGame" onclick="joinGame()">Join Game</button>
         </div>
         <div id="serverList">

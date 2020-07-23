@@ -68,8 +68,8 @@ io.on("connection", function (socket) {
     io.sockets.emit("move", move, id);
   });
 
-  socket.on("username", function (data, id, p) {
-    io.sockets.emit("username", data, id, p);
+  socket.on("username", function (data, id, p, time) {
+    io.sockets.emit("username", data, id, p, time);
   });
 
   socket.on("gameover", function (id, time, leave) {
