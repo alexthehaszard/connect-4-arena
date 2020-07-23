@@ -219,6 +219,6 @@ button:hover {
   position: relative;
   grid-row: 1/4;
   grid-column: 2;
-  width: max(75px);
+  min-width: 75px;
   margin-right: 0;
 }
