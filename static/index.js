@@ -417,6 +417,8 @@ socket.on("left", function (id) {
 });
 
 window.onbeforeunload = function () {
-  socket.emit("gameover", gameid, false, true);
+  if (gameid) {
+    socket.emit("gameover", gameid, false, true);
+  }
   return null;
 };
