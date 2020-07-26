@@ -5,7 +5,7 @@
     <link href="/static/index.css" rel="stylesheet" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="creator: alex haszard, game: connect 4" />
+    <meta name="description" content="Connect 4 online to play with friends!" />
     <title>Connect 4 Arena</title>
   </head>
 
@@ -20,28 +20,51 @@
       <div id="players"></div>
       <p id="won" style="display: none;"></p>
       <div id="setup">
-        <div id="serverSetup" style="display: none">
+        <div id="serverSetup" style="display: none;" onsubmit="joinGame();">
           <label id="usernameLabel" for="username">Username</label>
           <input id="username" maxlength="16" type="text" />
-          <label id="passwordLabel" for="password" style="display: none">Game ID</label>
-          <input id="password" maxlength="16" style="display: none" type="text" />
-          <label id="turnLabel" for="timerLength" style="display: none">Turn Length</label>
-          <label id="timerLabel" for="timerLength" style="display: none">30s</label>
-          <input type="range" min="2" max="30" value="30" id="timerLength" oninput="changeLength()" style="display: none">
-          <button id="joinGame" onclick="joinGame()">Join Game</button>
+          <label id="passwordLabel" for="password" style="display: none;"
+            >Game ID</label
+          >
+          <input
+            id="password"
+            maxlength="16"
+            style="display: none;"
+            type="text"
+          />
+          <label id="turnLabel" for="timerLength" style="display: none;"
+            >Turn Length</label
+          >
+          <label id="timerLabel" for="timerLength" style="display: none;"
+            >30s</label
+          >
+          <input
+            type="range"
+            min="2"
+            max="30"
+            value="30"
+            id="timerLength"
+            oninput="changeLength()"
+            style="display: none;"
+          />
+          <button id="joinGame" onclick="joinGame()">
+            Join Game
+          </button>
         </div>
         <div id="serverList">
           <p class="server-title">Server List</p>
           <div id="createServer" onclick="createServer()">
             <p>Create Server</p>
-            <img class="images" src="/static/images/plus.png" alt="create server image">
+            <img
+              class="images"
+              src="/static/images/plus.png"
+              alt="create server image"
+            />
           </div>
-          <div id="servers">
-            
-          </div>
+          <div id="servers"></div>
         </div>
         <p id="turn" style="display: none;"></p>
       </div>
-    </body>
-  </main>
+    </main>
+  </body>
 </html>
