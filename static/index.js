@@ -200,6 +200,7 @@ function checkSurrounding(i, j) {
     // if you don't win then show you lose
     document.getElementById("won").innerHTML = "You lose :(";
   }
+  clearInterval(interval);
 }
 
 function createServer() {
