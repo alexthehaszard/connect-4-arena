@@ -1,6 +1,7 @@
 const express = require("express");
 const http = require("http");
 const path = require("path");
+const helmet = require("helmet");
 const socketIO = require("socket.io");
 
 const app = express();
@@ -22,6 +23,7 @@ let counter = 0;
 const port = process.env.PORT || 5000;
 
 app.use("/static", express.static(__dirname + "/static"));
+app.use(helmet());
 
 app.get("/", function (request, response) {
   response.sendFile(path.join(__dirname, "index.html"));
