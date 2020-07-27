@@ -81,10 +81,13 @@ function createBoard() {
 
 function setColour(j, bypass) {
   // this is called when a piece is placed
-  // if you are not meant to allow moves, return
-  if (dontAllowMoves === true) return;
-  // if it's not your turn, return.
-  if (document.getElementById("turn").innerHTML !== "your turn") return;
+  // if it's not your turn or you cannot place a piece there, return.
+  if (
+    document.getElementById("turn").innerHTML !== "your turn" ||
+    dontAllowMoves === true ||
+    board[0][j] !== 0
+  )
+    return;
   // if it is turned from a server's call
   if ((turn % 2 === 1 && board[0][j] === 0) || turn[0] === 0 || turn === 0) {
     // if it's a red piece, change it to red
