@@ -439,3 +439,10 @@ window.onbeforeunload = function () {
   }
   return null;
 };
+
+window.onpagehide = function () {
+  if (gameid) {
+    socket.emit("gameover", gameid, false, true);
+  }
+  return null;
+};

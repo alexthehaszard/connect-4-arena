@@ -2,8 +2,10 @@ const express = require("express");
 const http = require("http");
 const path = require("path");
 const helmet = require("helmet");
+const Filter = require("bad-words");
 const socketIO = require("socket.io");
 
+const filter = new Filter();
 const app = express();
 const server = http.Server(app);
 const io = socketIO(server);
@@ -29,9 +31,6 @@ app.get("/", function (request, response) {
   response.sendFile(path.join(__dirname, "index.html"));
 });
 
-// server.listen(5000, function () {
-//   console.log("Starting server on port 5000");
-// });
 setInterval(() => {
   timer();
 }, 1000);
@@ -71,7 +70,7 @@ io.on("connection", function (socket) {
   });
 
   socket.on("username", function (data, id, p, time) {
-    io.sockets.emit("username", data, id, p, time);
+    io.sockets.emit("username", filter.clean(data), id, p, time);
   });
 
   socket.on("gameover", function (id, time, leave) {
@@ -105,7 +104,7 @@ io.on("connection", function (socket) {
       gameid.push(pass);
       turn.push(0);
       players.push(1);
-      usernames.push(username);
+      usernames.push(filter.clean(username));
       io.sockets.emit("return", pass, id);
       console.log(gameid);
       io.sockets.emit("games", gameid, usernames, players);
