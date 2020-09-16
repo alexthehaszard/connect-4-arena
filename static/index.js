@@ -47,6 +47,7 @@ let hasLost = false;
 let interval;
 
 let turnLength = 30;
+let firstMove = true;
 
 // when the page is loaded, get all of the games
 socket.emit("getTimes");
@@ -88,8 +89,12 @@ function setColour(j, bypass) {
     board[0][j] !== 0
   )
     return;
+  if (firstMove) {
+    turn++;
+    firstMove = false;
+  }
   // if it is turned from a server's call
-  if ((turn % 2 === 1 && board[0][j] === 0) || turn[0] === 0 || turn === 0) {
+  if ((turn + 1) % 2 === 0 && board[0][j] === 0) {
     // if it's a red piece, change it to red
     colourChange("red", j);
     board[index - 1][j] = 1;
@@ -204,6 +209,7 @@ function checkSurrounding(i, j) {
     document.getElementById("won").innerHTML = "You lose :(";
   }
   clearInterval(interval);
+  interval = null;
 }
 
 function createServer() {
@@ -238,6 +244,7 @@ function timer() {
   if (counter >= turnLength) {
     // if you have lost, stop the counter
     clearInterval(interval);
+    interval = null;
     hasLost = true;
     // tell the server the game is over
     socket.emit("gameover", gameid, true);
@@ -280,6 +287,7 @@ function joinGame(join) {
 
 socket.on("move", function (data, id) {
   if (id === gameid) {
+    firstMove = false;
     if ((turn + 1) % 2 === player - 1) {
       console.log("data: " + data);
       setColour(data, true);
@@ -358,15 +366,18 @@ socket.on("turn", function (t, id) {
     if ((turn + 1) % 2 === player - 1) {
       document.getElementById("turn").innerHTML = "your turn";
       counter = 0;
-      interval = setInterval(() => {
-        timer();
-      }, 1000);
+      if (!interval) {
+        interval = setInterval(() => {
+          timer();
+        }, 1000);
+      }
       dontAllowMoves = false;
       document.getElementById("players").firstChild.classList =
         "current-player";
       document.getElementById("players").lastChild.classList = "";
     } else {
       clearInterval(interval);
+      interval = null;
       if (counter > 0) {
         counter = 0;
         document.getElementById("counter").innerHTML = counter;

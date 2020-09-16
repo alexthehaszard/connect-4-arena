@@ -102,7 +102,7 @@ io.on("connection", function (socket) {
     } else {
       startTimes.push(counter);
       gameid.push(pass);
-      turn.push(0);
+      turn.push(Math.floor(Math.random() * 2));
       players.push(1);
       usernames.push(filter.clean(username));
       io.sockets.emit("return", pass, id);
